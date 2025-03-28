@@ -40,10 +40,21 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+pub fn is_valid_i32(s: &str) -> bool {
+    s.parse::<i32>().is_ok()
+}
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let x: Vec<_> = s.split(",").collect();
+         if x.len() !=2 || x[0] == "" || !is_valid_i32(x[1]){
+            Person::default()
+        }else {
+            Person{
+                name : x[0].to_string(),
+                age : x[1].parse().unwrap()
+            }
+        }
     }
 }
 
