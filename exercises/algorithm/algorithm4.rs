@@ -41,7 +41,7 @@ where
 
 impl<T> BinarySearchTree<T>
 where
-    T: Ord,
+    T: Ord+Copy,
 {
 
     fn new() -> Self {
@@ -54,9 +54,25 @@ where
     }
 
     // Search for a value in the BST
-    fn search(&self, value: T) -> bool {
+    fn search(&self, value: T) -> bool  {
         //TODO
-        true
+        match &self.root {
+            Some(node) => self.search_node(value, node.as_ref()),
+            None => false,
+        }
+    }
+
+    fn search_node(&self,value: T,node : &TreeNode<T>)->bool {
+       
+        if node.value == value {
+            return true;
+        }
+        if node.left.is_none() && node.right.is_none() {
+            return false;
+        }
+       let left = self.search_node(value, node.left.as_ref().unwrap());
+       let right= self.search_node(value,node.right.as_ref().unwrap());
+       left||right
     }
 }
 
@@ -67,6 +83,12 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
+        match self.root {
+            None=>{self.root = },
+            Some(node)=>{
+
+            }
+        }
     }
 }
 

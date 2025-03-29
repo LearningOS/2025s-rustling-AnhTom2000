@@ -2,7 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -70,13 +69,38 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
+	where T:Clone+Ord 
+    {
 		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+        let mut index1: u32 = 0;
+        let mut index2: u32 = 0;
+        let mut la = list_a;
+        let mut lb = list_b;
+        let mut list_c = LinkedList::<T>::new();
+        while index1 < la.length && index2  < lb.length {
+            let v1 = la.get(index1 as i32).unwrap();
+            let v2 = lb.get(index2 as i32).unwrap();
+            if v1 <= v2 {
+                list_c.add(v1.clone());
+                index1+=1;
+            } else {
+                list_c.add(v2.clone());
+                index2+=1;
+            }
         }
+        while index1 < la.length {
+                let v1 = la.get(index1 as i32).unwrap();
+                list_c.add(v1.clone());
+                index1+=1;
+        }
+        
+        while index2 < lb.length {
+                let v2 = lb.get(index2 as i32).unwrap();
+                list_c.add(v2.clone());
+                index2+=1;
+        }
+        
+        list_c
 	}
 }
 
@@ -110,7 +134,7 @@ mod tests {
 
     #[test]
     fn create_numeric_list() {
-        let mut list = LinkedList::<i32>::new();
+        let mut list: LinkedList<i32> = LinkedList::<i32>::new();
         list.add(1);
         list.add(2);
         list.add(3);

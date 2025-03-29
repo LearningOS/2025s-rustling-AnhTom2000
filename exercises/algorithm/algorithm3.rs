@@ -3,11 +3,36 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
-
-fn sort<T>(array: &mut [T]){
+use std::cmp::PartialOrd;
+use std::marker::Copy;
+use std::mem::swap;
+fn sort<T>(array: &mut [T]) where T: PartialOrd+Copy{
 	//TODO
+    quick_sort(array, 0, array.len()-1);
 }
+fn quick_sort<T>(array: &mut [T], low: usize, high: usize)
+where
+    T: PartialOrd+Copy{
+    if low < high{
+        let mut i = low;
+        let mut j = high;
+        let  x  = array[low];
+        while i < j{
+           while i < j && array[j] >=x {j-=1;}
+           if i < j {
+            array[i] = array[j];
+           }
+           while i< j && array[i] <=x {i+=1;} 
+           if i < j{
+            array[j] = array[i];
+           }   
+    }
+    array[i] = x;
+    quick_sort(array,low,i);
+    quick_sort(array,i+1, high);
+  }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
