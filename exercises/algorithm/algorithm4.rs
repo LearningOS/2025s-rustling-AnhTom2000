@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -41,7 +40,7 @@ where
 
 impl<T> BinarySearchTree<T>
 where
-    T: Ord+Copy,
+    T: Ord,
 {
 
     fn new() -> Self {
@@ -50,30 +49,22 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        match self.root{
+            Some(ref mut root)=> root.as_mut().insert(value),
+            None=> self.root = Some(Box::new(TreeNode::new(value)))
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool  {
         //TODO
         match &self.root {
-            Some(node) => self.search_node(value, node.as_ref()),
+            Some(ref root) => root.as_ref().search(value),
             None => false,
         }
     }
 
-    fn search_node(&self,value: T,node : &TreeNode<T>)->bool {
-       
-        if node.value == value {
-            return true;
-        }
-        if node.left.is_none() && node.right.is_none() {
-            return false;
-        }
-       let left = self.search_node(value, node.left.as_ref().unwrap());
-       let right= self.search_node(value,node.right.as_ref().unwrap());
-       left||right
-    }
+    
 }
 
 impl<T> TreeNode<T>
@@ -83,10 +74,42 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
-        match self.root {
-            None=>{self.root = },
-            Some(node)=>{
-
+         //TODO
+         if value == self.value {
+            return;
+        }
+        if value < self.value{
+           match self.left {
+               Some(ref mut left)=>{
+                  left.insert(value);
+               },
+                None => {
+                     self.left = Some(Box::new(TreeNode::new(value)));
+                }
+           }
+        }else {
+            match self.right {
+                Some(ref mut right)=>{
+                   right.insert(value);
+                },
+                None => {
+                     self.right = Some(Box::new(TreeNode::new(value)));
+                }
+           }
+        }
+    }
+    fn search(&self,value : T)->bool{
+        if self.value == value{
+            return true;
+        }else if value <= self.value{
+             match self.left{
+                Some(ref left_node) => left_node.search(value),
+                None => false
+             }
+        }else {
+            match self.right{
+                Some(ref right_node) => right_node.search(value),
+                None => false
             }
         }
     }
